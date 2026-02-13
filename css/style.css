@@ -1,0 +1,530 @@
+/* Global Reset & Base Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    line-height: 1.6;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Typography */
+h1,
+h2,
+h3 {
+    margin-bottom: 0.5em;
+    font-weight: 600;
+}
+
+a {
+    color: #4fc3f7;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #81d4fa;
+}
+
+/* Layout Containers */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.center-content {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* Header */
+header {
+    background: #1e1e1e;
+    padding: 1rem 2rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Cards & Glassmorphism */
+.card {
+    background: rgba(30, 30, 30, 0.8);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 2rem;
+    margin: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.4);
+}
+
+.btn {
+    display: inline-block;
+    background: linear-gradient(135deg, #1e88e5 0%, #1565c0 100%);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: filter 0.3s, transform 0.1s;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.btn:hover {
+    filter: brightness(1.2);
+}
+
+.btn:active {
+    transform: scale(0.98);
+}
+
+.btn-secondary {
+    background: linear-gradient(135deg, #424242 0%, #303030 100%);
+}
+
+.btn-level {
+    width: 80px;
+    padding: 8px 0;
+    margin: 0 5px;
+    font-size: 0.9rem;
+}
+
+/* Level Colors (matching Python app) */
+.level-0 {
+    background-color: #D32F2F !important;
+    color: white !important;
+}
+
+.level-1 {
+    background-color: #FF9800 !important;
+    color: black !important;
+}
+
+.level-2 {
+    background-color: #FBC02D !important;
+    color: black !important;
+}
+
+.level-3 {
+    background-color: #8BC34A !important;
+    color: black !important;
+}
+
+.level-4 {
+    background-color: #2196F3 !important;
+    color: white !important;
+}
+
+/* Visual Table */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(18, 1fr);
+    grid-template-rows: repeat(7, 1fr);
+    /* Standard 7 periods */
+    gap: 4px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    overflow-x: auto;
+}
+
+.card-cell {
+    aspect-ratio: 1 / 1;
+    background: #333;
+    border: 1px solid #555;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-weight: bold;
+    position: relative;
+    transition: transform 0.1s;
+    user-select: none;
+    min-width: 40px;
+}
+
+.card-cell:hover {
+    transform: scale(1.1);
+    z-index: 10;
+    border-color: #fff;
+}
+
+.card-term {
+    font-size: 1.2rem;
+    opacity: 0;
+    /* Hidden by default */
+    transition: opacity 0.2s;
+}
+
+.card-no {
+    font-size: 0.7rem;
+    position: absolute;
+    top: 2px;
+    left: 4px;
+    color: #eee;
+    /* Changed from #aaa for better visibility against colors if shown */
+    opacity: 0;
+    /* Hidden by default */
+    transition: opacity 0.2s;
+}
+
+.card-cell:hover .card-term,
+.card-cell:hover .card-no {
+    opacity: 1;
+    /* Show on hover */
+}
+
+
+.empty-cell {
+    pointer-events: none;
+}
+
+/* Context Menu */
+#context-menu {
+    display: none;
+    position: absolute;
+    z-index: 1000;
+    background: #2c2c2c;
+    border: 1px solid #555;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    padding: 5px 0;
+}
+
+#context-menu .menu-item {
+    padding: 8px 20px;
+    cursor: pointer;
+    color: #eee;
+}
+
+#context-menu .menu-item:hover {
+    background: #444;
+}
+
+/* Info Panel for Table */
+.info-panel {
+    background: #1e1e1e;
+    padding: 15px;
+    text-align: center;
+    border-top: 1px solid #333;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.info-text-large {
+    font-size: 1.5rem;
+    margin-bottom: 5px;
+}
+
+.info-text-small {
+    font-size: 1.1rem;
+    color: #aaa;
+}
+
+.settings-panel {
+    background: #2c2c2c;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    width: 100%;
+    max-width: 600px;
+    display: none;
+    /* Toggled via JS */
+}
+
+.settings-panel.active {
+    display: block;
+}
+
+.checkbox-group {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+    flex-wrap: wrap;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+/* Utility */
+.hidden {
+    display: none !important;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.modal.active {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: #2c2c2c;
+    margin: auto;
+    padding: 2.5rem;
+    border: 1px solid #555;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.close-btn {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 20px;
+    cursor: pointer;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: #fff;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.data-section {
+    margin-bottom: 1rem;
+}
+
+.data-section h3 {
+    margin-bottom: 0.5rem;
+    color: #4fc3f7;
+}
+
+.desc {
+    font-size: 0.9rem;
+    color: #bbb;
+    margin-bottom: 0.5rem;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 10px;
+    font-family: monospace;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+textarea:focus {
+    outline: none;
+    border-color: #2196F3;
+}
+
+/* Quiz Typography Override */
+.hanzi-text {
+    font-size: 4rem;
+    /* Specific request for larger Hanzi */
+    font-family: "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+    margin: 10px 0;
+    line-height: 1.2;
+}
+
+.sub-text {
+    font-size: 1.5rem;
+    color: #aaa;
+    margin-bottom: 10px;
+}
+
+/* ============================================================
+   長文対応版 追加スタイル
+   ============================================================ */
+
+/* ヒント表示用スタイル */
+.hint-text {
+    font-size: 1rem;
+    color: #888;
+    font-style: italic;
+    margin-bottom: 8px;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+/* 長文対応フォントサイズ */
+.long-text {
+    font-size: 1.5rem;
+    line-height: 1.5;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* 横長タイル形式 (table.html用) */
+.horizontal-tile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px 16px;
+    background: #333;
+    border: 1px solid #555;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+}
+
+.horizontal-tile:hover {
+    background: #444;
+    transform: translateX(4px);
+}
+
+.tile-front {
+    flex: 2;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    word-wrap: break-word;
+}
+
+.tile-hint {
+    flex: 2;
+    font-size: 0.85rem;
+    color: #888;
+    font-style: italic;
+    word-wrap: break-word;
+}
+
+.tile-back {
+    flex: 1;
+    font-size: 1rem;
+    color: #4fc3f7;
+    font-weight: bold;
+    text-align: center;
+}
+
+.tile-level {
+    width: 50px;
+    font-size: 0.75rem;
+    color: #666;
+    text-align: right;
+}
+
+/* Editable Table Styles */
+.edit-table-container {
+    overflow: auto;
+    /* Handle both X and Y */
+    width: 100%;
+    margin-top: 10px;
+    max-height: 500px;
+    /* Constrain height to force scrollbars to appear on container */
+    border: 1px solid #444;
+    /* Optional visual boundary */
+}
+
+.edit-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.edit-table th,
+.edit-table td {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.edit-table th {
+    background-color: #333;
+    font-weight: bold;
+    color: #eee;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    /* Ensure header stays on top */
+}
+
+.edit-table input,
+.edit-table select {
+    width: 100%;
+    background: #222;
+    border: 1px solid #555;
+    color: #e0e0e0;
+    padding: 4px;
+    border-radius: 4px;
+}
+
+.edit-table input:focus {
+    border-color: #2196F3;
+    outline: none;
+}
+
+.btn-small {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    margin-right: 4px;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-save {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-del {
+    background-color: #f44336;
+    color: white;
+}

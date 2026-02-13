@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flow Learning</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+        <div class="logo"><a href="index.html" style="color:white;">ホーム</a> / 聞き流し</div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div id="current-subject-display" style="font-size: 0.9rem; color: #ddd; margin-right: 15px;">科目: ...
+            </div>
+            <button id="btn-toggle-flow" class="btn">スタート</button>
+        </div>
+    </header>
+
+    <div id="flow-app" class="container center-content">
+
+        <div id="settings-area" style="margin-bottom: 20px;">
+            <label style="color:#aaa;">レベル: </label>
+            <label><input type="checkbox" class="flow-level" value="0" checked> 新規</label>
+            <label><input type="checkbox" class="flow-level" value="1" checked> Lv1</label>
+            <label><input type="checkbox" class="flow-level" value="2" checked> Lv2</label>
+            <label><input type="checkbox" class="flow-level" value="3"> Lv3</label>
+            <label><input type="checkbox" class="flow-level" value="4"> Lv4</label>
+
+            <span style="margin: 0 10px; color: #555;">|</span>
+
+            <label style="color:#aaa;">速度: </label>
+            <select id="flow-speed">
+                <option value="0.8">0.8x</option>
+                <option value="1.0" selected>1.0x</option>
+                <option value="1.2">1.2x</option>
+                <option value="1.5">1.5x</option>
+            </select>
+
+            <span style="margin: 0 10px; color: #555;">|</span>
+
+            <label style="color:#aaa;">音声: </label>
+            <select id="flow-audio-mode">
+                <option value="none">なし</option>
+                <option value="front" selected>表面のみ</option>
+                <option value="back">裏面のみ</option>
+                <option value="front_back">表面 → 裏面</option>
+                <option value="back_front">裏面 → 表面</option>
+            </select>
+            <button id="btn-reload-flow" class="btn btn-secondary"
+                style="padding: 5px 10px; font-size: 0.8rem;">リスト更新</button>
+        </div>
+
+        <div class="card" style="width: 100%; max-width: 800px; padding: 40px; text-align: center;">
+            <!-- 長文対応版: ヒント表示 -->
+            <div id="lbl-flow-hint" class="hint-text"
+                style="font-size: 1rem; color: #888; margin-bottom: 10px; min-height: 24px;"></div>
+
+            <div id="flow-sym" class="long-text"
+                style="font-size: 2.5rem; font-weight: bold; margin: 20px 0; min-height: 60px;">準備完了</div>
+            <div id="flow-jp" style="font-size: 1.8rem; color: #ccc; min-height: 40px;">--</div>
+
+            <div id="flow-status" style="margin-top: 30px; color: gray;">残り: 0</div>
+        </div>
+
+        <!-- Optional grading during flow (can be useful) -->
+        <div id="flow-grading" style="margin-top: 20px;">
+            <p style="margin-bottom: 5px; color:#aaa;">レベル更新 (クリックで設定):</p>
+            <button class="btn btn-level level-0" onclick="setFlowLevel(0)">新規</button>
+            <button class="btn btn-level level-1" onclick="setFlowLevel(1)">Lv1</button>
+            <button class="btn btn-level level-2" onclick="setFlowLevel(2)">Lv2</button>
+            <button class="btn btn-level level-3" onclick="setFlowLevel(3)">Lv3</button>
+            <button class="btn btn-level level-4" onclick="setFlowLevel(4)">Lv4</button>
+        </div>
+    </div>
+
+    <script src="js/tts_manager.js"></script>
+    <script src="js/db.js?v=csv_fix2"></script>
+    <script src="js/script.js?v=csv_fix2"></script>
+</body>
+
+</html>
