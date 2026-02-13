@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List View</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* 長文対応版: 横長タイル形式のレイアウト */
+        .list-view-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+        <div class="logo"><a href="index.html" style="color:white;">ホーム</a> / リスト表示 (横長)</div>
+        <div id="current-subject-display" style="font-size: 0.9rem; color: #ddd;">科目: ...</div>
+    </header>
+
+    <div class="container" style="max-width: 100%;">
+        <div id="table-container" class="card-grid">
+            <!-- JS will populate grid here -->
+        </div>
+    </div>
+
+    <!-- Right Click Context Menu -->
+    <div id="context-menu">
+        <div class="menu-item level-0" onclick="setTableLevel(0)">新規 (0)</div>
+        <div class="menu-item level-1" onclick="setTableLevel(1)">Lv1 (1)</div>
+        <div class="menu-item level-2" onclick="setTableLevel(2)">Lv2 (2)</div>
+        <div class="menu-item level-3" onclick="setTableLevel(3)">Lv3 (3)</div>
+        <div class="menu-item level-4" onclick="setTableLevel(4)">Lv4 (4)</div>
+    </div>
+
+    <script src="js/tts_manager.js"></script>
+    <script src="js/db.js?v=csv_fix2"></script>
+    <script src="js/script.js?v=csv_fix2"></script>
+</body>
+
+</html>

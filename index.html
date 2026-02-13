@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorization Tool</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .management-panel {
+            background: #2a2a2a;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 800px;
+            border-radius: 8px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 10px;
+            margin-bottom: 10px;
+        }
+
+        .preview-list {
+            /* max-height removed to let edit-table-container handle scrolling */
+            background: #1e1e1e;
+            padding: 10px;
+            margin-top: 10px;
+        }
+
+        .preview-item {
+            border-bottom: 1px solid #333;
+            padding: 5px 0;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background-color: #2a2a2a;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 350px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .modal-header {
+            margin-bottom: 20px;
+        }
+
+        .modal-footer {
+            margin-top: 20px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 10px;
+            background: #333;
+            border: 1px solid #555;
+            color: #fff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+        <div class="logo">汎用暗記ツール (統合版)</div>
+        <div id="current-subject-display" style="font-size: 1rem; color: #aaa;">科目: ...</div>
+    </header>
+
+    <div class="container center-content" style="flex-direction: row; flex-wrap: wrap;">
+        <!-- Apps -->
+        <div class="card" style="width: 250px;">
+            <h2>聞き流し (Flow)</h2>
+            <p>音声ループ学習</p>
+            <br>
+            <a href="flow.html" class="btn">スタート</a>
+        </div>
+
+        <div class="card" style="width: 250px;">
+            <h2>クイズ</h2>
+            <p>用語 → 意味</p>
+            <br>
+            <a href="quiz.html" class="btn btn-secondary">スタート</a>
+        </div>
+
+        <div class="card" style="width: 250px;">
+            <h2>逆クイズ</h2>
+            <p>意味 → 用語</p>
+            <br>
+            <a href="name_quiz.html" class="btn btn-secondary">スタート</a>
+        </div>
+
+        <div class="card" style="width: 250px;">
+            <h2>リスト表示</h2>
+            <p>全項目一覧</p>
+            <br>
+            <a href="table.html" class="btn btn-secondary">開く</a>
+        </div>
+    </div>
+
+    <!-- Subject Selection Section -->
+    <div class="management-panel" id="subject-settings" style="margin-bottom: 20px;">
+        <h2>科目選択 (デッキ切り替え)</h2>
+        <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <select id="sel-subject" style="padding: 10px; flex-grow: 1; font-size: 1rem;"></select>
+            <button id="btn-new-subject" class="btn">新規作成...</button>
+            <button id="btn-del-subject" class="btn btn-secondary" style="background: #d32f2f;">削除</button>
+        </div>
+    </div>
+
+    <!-- Audio Settings Section -->
+    <div class="management-panel" style="margin-bottom: 20px;">
+        <h2>音声設定 (現在の科目用)</h2>
+        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+            <div>
+                <label>表面言語 (用語):</label><br>
+                <select id="sel-front-lang" style="padding: 5px; margin-top: 5px;">
+                    <option value="en-US">英語 (米国)</option>
+                    <option value="en-GB">英語 (英国)</option>
+                    <option value="fr-FR">フランス語</option>
+                    <option value="de-DE">ドイツ語</option>
+                    <option value="es-ES">スペイン語</option>
+                    <option value="zh-TW">台湾華語</option>
+                    <option value="zh-CN">中国語 (大陸)</option>
+                    <option value="ja-JP">日本語</option>
+                    <option value="ko-KR">韓国語</option>
+                    <option value="it-IT">イタリア語</option>
+                </select>
+            </div>
+            <div>
+                <label>表示モード:</label><br>
+                <select id="sel-display-mode" style="padding: 5px; margin-top: 5px;">
+                    <option value="long">長文 (ロングモード)</option>
+                    <option value="short">単語 (ショートモード)</option>
+                </select>
+            </div>
+            <div>
+                <label>裏面言語 (意味):</label><br>
+                <select id="sel-back-lang" style="padding: 5px; margin-top: 5px;">
+                    <option value="ja-JP">日本語</option>
+                    <option value="en-US">英語 (米国)</option>
+                    <option value="fr-FR">フランス語</option>
+                    <option value="de-DE">ドイツ語</option>
+                    <option value="es-ES">スペイン語</option>
+                    <option value="zh-TW">台湾華語</option>
+                    <option value="zh-CN">中国語 (大陸)</option>
+                    <option value="ko-KR">韓国語</option>
+                </select>
+            </div>
+        </div>
+        <button id="btn-save-lang" class="btn" style="margin-top: 15px;">設定を保存</button>
+        <span id="msg-lang" style="color: #4caf50; display: none; margin-left: 10px;">保存しました！</span>
+    </div>
+
+    <!-- Data Management Section -->
+    <div id="management-app" class="management-panel">
+        <h2>データ管理</h2>
+
+        <h3>バックアップ / 復元 (科目データ + 進捗)</h3>
+        <p style="font-size: 0.9rem; color: #aaa;">現在の科目と学習進捗をまとめてJSON形式で書き出します。</p>
+        <div style="margin-bottom: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <button id="btn-export-json" class="btn">バックアップを書き出し</button>
+            <button id="btn-import-json" class="btn btn-secondary">バックアップを読み込み...</button>
+            <input type="file" id="file-import-json" style="display: none;" accept=".json">
+        </div>
+
+        <hr style="border-color: #444; margin: 20px 0;">
+
+        <div class="data-section">
+            <h3>クイックインポート (テキスト)</h3>
+            <p class="desc">現在の科目にテキストデータを追加します。</p>
+            <p class="desc">対応形式: タブ区切り (Excel/Spreadsheet貼付) - 「表面(読上) / 表面補足(情報) / 裏面(読上) / 裏面補足(情報)」 の最大4カラム形式</p>
+            <textarea id="data-input" placeholder="Excel等のデータをここに貼り付けてください (タブ区切り)
+例:
+Apple	(名詞)	リンゴ	果物
+Run	(動詞)	走る	移動する
+Happy		幸せ	(形容詞)"></textarea>
+            <button class="btn" id="btn-import">データ追加/インポート</button>
+            <span id="status-msg" style="margin-left: 10px; font-weight: bold;"></span>
+        </div>
+
+        <h3>登録データプレビュー</h3>
+        <div id="list-preview" class="preview-list">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <!-- Maintenance Section -->
+    <div id="maintenance-panel" class="management-panel" style="border-top: 5px solid #555;">
+        <h2>メンテナンス (古いデータの削除)</h2>
+        <p style="font-size: 0.9rem; color: #aaa;">フォルダ移動などで使われなくなった古いデータベースを検出して削除できます。</p>
+        <button id="btn-scan-db" class="btn btn-secondary" style="margin-bottom: 10px;">不要なDBをスキャン</button>
+        <div id="db-list" style="margin-top: 10px;"></div>
+    </div>
+
+    <!-- Custom Dialog Modal -->
+    <div id="modal-new-subject" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>新しい科目を作成</h3>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="input-new-subject-name" placeholder="科目名を入力してください">
+            </div>
+            <div class="modal-footer">
+                <button id="btn-modal-cancel" class="btn btn-secondary">キャンセル</button>
+                <button id="btn-modal-ok" class="btn">作成</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/tts_manager.js"></script>
+    <script src="js/db.js?v=csv_fix3"></script>
+    <script src="js/script.js?v=csv_fix3"></script>
+</body>
+
+</html>

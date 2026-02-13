@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz (Term -> Def)</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header style="display: flex; justify-content: space-between; align-items: center; padding: 10px 20px;">
+        <div class="logo"><a href="index.html" style="color:white;">ホーム</a> / クイズ</div>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <div id="current-subject-display" style="font-size: 0.9rem; color: #ddd; margin-right: 15px;">科目: ...
+            </div>
+            <button id="btn-settings" class="btn btn-secondary">設定</button>
+        </div>
+    </header>
+
+    <div id="quiz-app" class="container">
+
+        <!-- Settings Panel -->
+        <div id="settings-panel" class="settings-panel">
+            <h3>設定</h3>
+            <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" name="level" value="0" checked> 新規 (0)</label>
+                <label class="checkbox-label"><input type="checkbox" name="level" value="1" checked> Lv1 (1)</label>
+                <label class="checkbox-label"><input type="checkbox" name="level" value="2" checked> Lv2 (2)</label>
+                <label class="checkbox-label"><input type="checkbox" name="level" value="3"> Lv3 (3)</label>
+                <label class="checkbox-label"><input type="checkbox" name="level" value="4"> Lv4 (4)</label>
+            </div>
+
+            <div style="margin-bottom: 15px;">
+                <label>出題順:</label>
+                <select id="sort-mode" style="padding: 5px;">
+                    <option value="random">ランダム</option>
+                    <option value="date_asc">古い順</option>
+                </select>
+            </div>
+
+            <button id="btn-apply" class="btn">適用して再開</button>
+        </div>
+
+        <!-- Quiz Area -->
+        <div class="card quiz-container" style="width: 100%; max-width: 900px; position: relative; text-align: center;">
+            <div id="lbl-status" style="position: absolute; top: 10px; right: 15px; color: #888; font-size: 0.9rem;">
+                残り: 0/0</div>
+
+            <!-- 長文対応版: ヒント表示エリア -->
+            <div id="lbl-hint" class="hint-text"
+                style="font-size: 1rem; color: #888; margin-bottom: 10px; min-height: 24px;"></div>
+
+            <!-- 長文対応版: フォントサイズを調整 -->
+            <div id="lbl-question" class="question-text long-text"
+                style="font-size: 1.8rem; margin: 20px 0; line-height: 1.4;">?</div>
+
+            <div class="answer-area">
+                <div id="btn-audio" class="hidden" style="margin-bottom: 10px;">
+                    <button class="btn btn-secondary" onclick="playAudio()">🔊 音声再生</button>
+                </div>
+                <!-- ID matched to script logic -->
+                <div id="lbl-answer-main" class="hanzi-text" style="font-size: 2rem; color: #ddd; min-height: 40px;">
+                </div>
+            </div>
+
+            <div id="lbl-info" style="color: gray; margin-top: 10px;"></div>
+
+            <div class="controls" style="margin-top: 30px;">
+                <button id="btn-show" class="btn" style="width: 200px; font-size: 1.2rem;"
+                    onclick="showAnswer()">答えを見る</button>
+
+                <div id="grading-buttons" class="hidden">
+                    <button class="btn btn-level level-0" onclick="grade(0)">また今度</button>
+                    <button class="btn btn-level level-1" onclick="grade(1)">微妙</button>
+                    <button class="btn btn-level level-2" onclick="grade(2)">OK</button>
+                    <button class="btn btn-level level-3" onclick="grade(3)">簡単</button>
+                    <button class="btn btn-level level-4" onclick="grade(4)">完璧</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/tts_manager.js"></script>
+    <script src="js/db.js?v=csv_fix2"></script>
+    <script src="js/script.js?v=csv_fix2"></script>
+</body>
+
+</html>
